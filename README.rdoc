@@ -1,11 +1,44 @@
 = CacheVersion
 
   Rails gem to generate cache versions for your model
+  It allows to have several versions with keys to identify them.
 
 == Install
 
-  gem install dwaynemac-cache_version --source http://gems.github.com
+=== Gem
+  next...
+
+=== Plugin
+  script/plugin install git://github.com/dwaynemac/cache_version.git
 
 == Usage
 
-  # TODO write documentation
+=== Example
+
+====in product.rb
+class Product
+  cache_version
+
+  ...
+end
+
+====in reseller.rb
+class Reseller
+  after_save :update_product
+
+  def update_product
+    self.product.increment_version('resellers')
+  end
+end
+
+====in products/show.html.erb
+
+<h1>Buyers</h1>
+<%- cache(product.version('buyers')) do -%>
+ ...
+<%- end -%>
+
+<h1>Resellers</h1>
+<%- cache(product.version('resellers')) do -%>
+ ...
+<%- end -%>
