@@ -4,20 +4,18 @@ module CacheVersion
   end
 
   module ClassMethods
-    def keeps_cache_versions(*args, &block)
+    def cache_version(*args, &block)
       #default options
       options = {}
       options.merge!(args.pop) if args.last.kind_of?(Hash)
 
       class_eval <<-EOV
-        after_save :increment_version
-
         def version(key)
-          return [self.cache_version,"/",key,":",Version.read(Version.read([self.class.to_s,"#",self.id,key].join))].join
+          return [self.cache_key,"/",key,":",Version.read([self.class.to_s,"#",self.id,key].join)].join
         end
 
         def increment_version(key)
-          return Version.increment([self.class.to_s,"#",self.id,key].join)
+          return [self.cache_key,"/",key,":",Version.increment([self.class.to_s,"#",self.id,key].join)].join
         end
       EOV
     end
