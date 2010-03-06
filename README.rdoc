@@ -18,7 +18,7 @@ Two methods are provided to the model.
 
 ===version(key)
 returns a string representing version for this model under key.
-version has the following format: class_name/cache_key/key:key_version
+version has the following format: cache_key/key:key_version
 
 ===increment_version(key)
 increments by one version for given key and returns it
