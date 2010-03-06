@@ -7,7 +7,7 @@ It allows to have several versions with keys to identify them.
 
 === Gem
 
-next...
+  soon...
 
 === Plugin
   script/plugin install git://github.com/dwaynemac/cache_version.git
