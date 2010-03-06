@@ -54,3 +54,13 @@ increments by one version for given key and returns it
     <%- cache(product.version('resellers')) do -%>
      ...
     <%- end -%>
+
+=Version
+
+Internally CacheVersion uses module Version wich is also made available for the application.
+This module provides
+
+===Version.increment(key,by)
+===Version.decrement(key,by)
+===Version.read(key)
+===Version.set(key,value)
