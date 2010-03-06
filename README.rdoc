@@ -1,0 +1,11 @@
+= CacheVersion
+
+  Rails gem to generate cache versions for your model
+
+== Install
+
+  gem install dwaynemac-cache_version --source http://gems.github.com
+
+== Usage
+
+  # TODO write documentation
