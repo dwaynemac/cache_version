@@ -9,20 +9,7 @@ module CacheVersion
       options = {}
       options.merge!(args.pop) if args.last.kind_of?(Hash)
 
-      class_eval <<-EOV
-        def version(key=nil,consider_updated_at=true)
-          return [self.model_key(consider_updated_at),"/",key,":",Version.read([self.class.to_s,"#",self.id,key].join)].join
-        end
-
-        def increment_version(key=nil,consider_updated_at=true)
-          Version.increment([self.class.to_s,"#",self.id,key].join)
-          return self.version(key,consider_updated_at)
-        end
-
-        def model_key(consider_updated_at=true)
-          return (consider_updated_at)? self.cache_key : [self.class.to_s,self.id].join
-        end
-      EOV
+			send :include, InstanceMethods
     end
 
     # When model is saved it increments versions of associated models
@@ -30,6 +17,21 @@ module CacheVersion
       # TODO
     end
   end
+
+	module InstanceMethods
+		def version(key=nil,consider_updated_at=true)
+	    return [self.model_key(consider_updated_at),"/",key,":",Version.read([self.class.to_s,"#",self.id,key].join)].join
+    end
+
+    def increment_version(key=nil,consider_updated_at=true)
+      Version.increment([self.class.to_s,"#",self.id,key].join)
+      return self.version(key,consider_updated_at)
+    end
+
+    def model_key(consider_updated_at=true)
+      return (consider_updated_at)? self.cache_key : [self.class.to_s,self.id].join
+    end
+	end
 
   module Version
       # increments key by value (default 1) and returns new value
@@ -68,7 +70,5 @@ module CacheVersion
   end
 end
 
-class ActiveRecord::Base
-  include CacheVersion
-  include Version
-end
+ActiveRecord::Base.send(:include,CacheVersion)
+ActiveRecord::Base.send(:include,Version)
