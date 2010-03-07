@@ -16,12 +16,17 @@ It allows to have several versions with keys to identify them.
 
 Two methods are provided to the model.
 
-===version(key)
+===version(key,consider_updated_at)
 returns a string representing version for this model under key.
+if consider_update_key is true
 version has the following format: cache_key/key:key_version
+else
+version has the following format: class_nameModel_id/key:key_version
 
-===increment_version(key)
-increments by one version for given key and returns it
+
+===increment_version(key,consider_updated_at)
+increments by one version for given key and returns it.
+consider_updated_at is only needed if you'll use returned value.
 
 === Example
 
@@ -46,7 +51,7 @@ increments by one version for given key and returns it
 ====in products/show.html.erb
 
     <h1>Buyers</h1>
-    <%- cache(product.version('buyers')) do -%>
+    <%- cache(product.version('buyers',false)) do -%>
      ...
     <%- end -%>
 

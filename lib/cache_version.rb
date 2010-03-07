@@ -10,12 +10,17 @@ module CacheVersion
       options.merge!(args.pop) if args.last.kind_of?(Hash)
 
       class_eval <<-EOV
-        def version(key=nil)
-          return [self.cache_key,"/",key,":",Version.read([self.class.to_s,"#",self.id,key].join)].join
+        def version(key=nil,consider_updated_at=true)
+          return [self.model_key(consider_updated_at),"/",key,":",Version.read([self.class.to_s,"#",self.id,key].join)].join
         end
 
-        def increment_version(key=nil)
-          return [self.cache_key,"/",key,":",Version.increment([self.class.to_s,"#",self.id,key].join)].join
+        def increment_version(key=nil,consider_updated_at=true)
+          Version.increment([self.class.to_s,"#",self.id,key].join)
+          return self.version(key,consider_updated_at)
+        end
+
+        def model_key(consider_updated_at=true)
+          return (consider_updated_at)? self.cache_key : [self.class.to_s,self.id].join
         end
       EOV
     end
