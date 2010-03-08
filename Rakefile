@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'echoe'
 
-Echoe.new('cache_version', '0.1.0') do |p|
+Echoe.new('cache_version', '0.1.1') do |p|
   p.description    = "Keep Models Cache versions"
   p.url            = "http://github.com/dwaynemac/cache_version"
   p.author         = "Dwayne Macgowan"
